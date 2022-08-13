@@ -1,0 +1,29 @@
+<%- include ('partials/head.ejs') %>
+
+    <body>
+        <div class="container">
+            <h2>Edit Student</h2>
+            <form action="/update" method="post">
+                <input type="hidden" value="<%= user.ID %>" name="userId">
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="nama" value="<%= user.NAMA %>" name="nama">
+                </div>
+                <div class="mb-3">
+                    <label for="nim" class="form-label">Student ID Number</label>
+                    <input type="text" class="form-control" id="nim" value="<%= user.NIM %>" name="nim">
+                </div>
+                <div class="mb-3">
+                    <label for="kelas" class="form-label">Class</label>
+                    <input type="text" class="form-control" id="kelas" value="<%= user.KELAS %>" name="kelas">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+    </body>
+
+    </html>
