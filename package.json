@@ -7,7 +7,7 @@
     "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "ibrammalik",
   "license": "ISC",
   "dependencies": {
     "body": "^5.1.0",
