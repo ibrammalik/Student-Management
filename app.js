@@ -10,6 +10,6 @@ app.set("views", "views");
 
 app.use(router);
 
-app.listen(8000, () => {
+app.listen(process.env.PORT, () => {
   console.log("<!----- SERVER READY ----->", "Listening at http://localhost:8000/");
 });
