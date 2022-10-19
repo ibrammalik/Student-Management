@@ -1,61 +1,56 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../lib/db");
+const { Student } = require("../lib/db");
 
 //untuk get data
-router.get("/", (req, res) => {
-    const sql = "SELECT * FROM user";
-    pool.query(sql, (err, result) => {
-        const users = JSON.parse(JSON.stringify(result));
-        res.render("index", { users: users, title: "Student List" });
-    });
+router.get("/", async (req, res) => {
+    try {
+        const users = await Student.findAll();
+        res.render("index", { users, title: "Student List" });
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 //untuk insert data
 router.get("/add", (req, res) => {
     res.render("adduser", { title: "Daftar Siswa | Tambah Siswa" });
 });
-router.post("/add-user", (req, res) => {
-    const insertSql = `INSERT INTO user (nama, nim, kelas) VALUES ('${req.body.nama}', '${req.body.nim}', '${req.body.kelas}')`;
-    pool.query(insertSql, (err, result) => {
-        if (err) throw err;
+router.post("/add-user", async (req, res) => {
+    try {
+        await Student.create({ NAMA: req.body.nama, NIM: req.body.nim, KELAS: req.body.kelas });
         res.redirect("/");
-    });
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 //Untuk Edit Data
-router.get("/edit/:userId", (req, res) => {
-    const userID = req.params.userId;
-    let sql = `SELECT * FROM user WHERE ID = ${userID}`;
-    pool.query(sql, (err, result) => {
-        res.render("edituser", {
-            user: result[0],
-            title: "Daftar Siswa | Edit Siswa",
-        });
-    });
+router.get("/edit/:userId", async (req, res) => {
+    try {
+        const user = await Student.findOne({ where: { ID: req.params.userId } });
+        res.render("edituser", { user, title: "Daftar Siswa | Edit Siswa" });
+    } catch (error) {
+        res.send(error.message);
+    }
 });
-
-router.post("/update", (req, res) => {
-    const sql = `UPDATE user SET 
-                      nama = '${req.body.nama}', 
-                      nim = '${req.body.nim}', 
-                      kelas = '${req.body.kelas}' 
-                      WHERE ID = '${req.body.userId}'
-                    `;
-    pool.query(sql, (err, result) => {
-        if (err) throw err;
+router.post("/update", async (req, res) => {
+    try {
+        await Student.update({ NAMA: req.body.nama, NIM: req.body.nim, KELAS: req.body.kelas }, { where: { ID: req.body.userId } });
         res.redirect("/");
-    });
+    } catch (error) {
+        res.send(error.message);
+    }
 });
 
 //Untuk Delete Data
-router.get("/delete/:userId", (req, res) => {
-    const userID = req.params.userId;
-    let sql = `DELETE FROM user WHERE ID = ${userID}`;
-    pool.query(sql, (err, result) => {
-        if (err) throw err;
+router.get("/delete/:userId", async (req, res) => {
+    try {
+        await Student.destroy({ where: { ID: req.params.userId } });
         res.redirect("/");
-    });
+    } catch (error) {
+        res.send(error.message);
+    }
 });
 
 module.exports = router;
