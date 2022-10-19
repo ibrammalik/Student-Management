@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const router = require("./routes/router");
+const router = require("./routes/user.router");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -12,5 +12,5 @@ app.set("views", "views");
 app.use(router);
 
 app.listen(process.env.PORT, () => {
-  console.log(`server listening...`);
+    console.log(`server listening...`);
 });
